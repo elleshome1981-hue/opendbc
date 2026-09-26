@@ -209,8 +209,8 @@ class CarState(CarStateBase):
       ret.stockFcw = cp_cam.vl["BRAKE_COMMAND"]["FCW"] != 0
       self.acc_hud = cp_cam.vl["ACC_HUD"]
       self.stock_brake = cp_cam.vl["BRAKE_COMMAND"]
-    if self.CP.flags & HondaFlags.BOSCH_RADARLESS:
-      self.lkas_hud = cp_cam.vl["LKAS_HUD"]
+if self.CP.flags & (HondaFlags.BOSCH_RADARLESS | HondaFlags.BOSCH_CANFD):
+  self.lkas_hud = cp_cam.vl["LKAS_HUD"]
 
     if self.CP.flags & HondaFlags.HAS_BSM:
       # BSM messages are on B-CAN, requires a panda forwarding B-CAN messages to CAN 0
