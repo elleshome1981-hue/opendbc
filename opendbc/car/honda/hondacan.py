@@ -1,7 +1,6 @@
 from opendbc.car import CanBusBase
 from opendbc.car.common.conversions import Conversions as CV
-from opendbc.car.honda.values import HondaFlags, CarControllerParams
-
+from opendbc.car.honda.values import CAR, HondaFlags, CarControllerParams
 # CAN bus layout with relay
 # 0 = ACC-CAN - radar side
 # 1 = F-CAN B - powertrain
@@ -166,7 +165,9 @@ def create_acc_hud(packer, bus, CP, enabled, pcm_speed, pcm_accel, hud_control, 
 
 def create_lkas_hud(packer, bus, CP, hud_control, lat_active, steering_available, alert_steer_required, lkas_hud):
   commands = []
-
+ # Diagnostic: preserve stock LKAS_HUD on CR-V 6G
+  if CP.carFingerprint == CAR.HONDA_CRV_6G and lkas_hud:
+    return [packer.make_can_msg('LKAS_HUD', bus, dict(lkas_hud))]
   lkas_hud_values = {
     'LKAS_READY': 1,
     'LKAS_STATE_CHANGE': 1,
